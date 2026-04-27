@@ -28,3 +28,5 @@ npm-debug.log*
 
 # vercel
 .vercel
+
+# Note: test/ folder with images is included
