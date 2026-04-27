@@ -418,6 +418,59 @@ img {
   border-radius: var(--radius-xl);
   overflow: hidden;
   box-shadow: var(--shadow-xl);
+  background: var(--bg-light);
+}
+
+.hero-infinite-gallery {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  overflow: hidden;
+  cursor: grab;
+}
+
+.hero-infinite-gallery:active {
+  cursor: grabbing;
+}
+
+.hero-gallery-track {
+  display: flex;
+  gap: 16px;
+  will-change: transform;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+}
+
+.hero-gallery-item {
+  flex-shrink: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.hero-gallery-item:hover {
+  transform: scale(1.05);
+}
+
+.hero-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-gallery-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1));
+  pointer-events: none;
 }
 
 .hero-carousel {
@@ -486,6 +539,10 @@ img {
   .hero-carousel {
     height: 350px;
   }
+  
+  .hero-infinite-gallery {
+    height: 350px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -493,9 +550,17 @@ img {
     height: 250px;
   }
   
+  .hero-infinite-gallery {
+    height: 250px;
+  }
+  
   .carousel-dot {
     width: 10px;
     height: 10px;
+  }
+  
+  .hero-gallery-track {
+    gap: 12px;
   }
 }
 
@@ -1660,25 +1725,11 @@ section {
     </div>
     <div class="hero-image">
       <div class="hero-image-wrapper">
-        <div class="hero-carousel" id="heroCarousel">
-          <div class="hero-carousel-slide active">
-            <img src="images/electrician-hero.jpg" alt="Professional Electrician at Work">
+        <div class="hero-infinite-gallery" id="heroGallery">
+          <div class="hero-gallery-track" id="galleryTrack">
+            <!-- Images will be duplicated by JavaScript for infinite loop -->
           </div>
-          <div class="hero-carousel-slide">
-            <img src="images/ceiling-wiring.jpg" alt="Ceiling Wiring Project">
-          </div>
-          <div class="hero-carousel-slide">
-            <img src="images/patti-fitting.jpg" alt="Patti Fitting Work">
-          </div>
-          <div class="hero-carousel-slide">
-            <img src="images/profile-patti.jpg" alt="Profile Patti Installation">
-          </div>
-          <div class="hero-carousel-dots">
-            <span class="carousel-dot active" data-slide="0"></span>
-            <span class="carousel-dot" data-slide="1"></span>
-            <span class="carousel-dot" data-slide="2"></span>
-            <span class="carousel-dot" data-slide="3"></span>
-          </div>
+          <div class="hero-gallery-overlay"></div>
         </div>
       </div>
     </div>
@@ -2256,52 +2307,154 @@ document.addEventListener('keydown', function(e) {
   }
 });
 
-// Hero Image Carousel
-const carousel = document.getElementById('heroCarousel');
-const slides = carousel.querySelectorAll('.hero-carousel-slide');
-const dots = carousel.querySelectorAll('.carousel-dot');
-let currentSlide = 0;
-let carouselInterval;
-
-function showSlide(index) {
-  slides.forEach((slide, i) => {
-    slide.classList.remove('active');
-    dots[i].classList.remove('active');
-  });
+// Hero Infinite Scrolling Gallery
+class InfiniteGallery {
+  constructor() {
+    this.gallery = document.getElementById('heroGallery');
+    this.track = document.getElementById('galleryTrack');
+    
+    // Gallery images configuration with visual variety
+    this.images = [
+      { src: 'images/electrician-hero.jpg', alt: 'Professional Electrician', height: 100, width: 320, y: 0 },
+      { src: 'images/ceiling-wiring.jpg', alt: 'Ceiling Wiring', height: 85, width: 280, y: 30 },
+      { src: 'images/patti-fitting.jpg', alt: 'Patti Fitting', height: 95, width: 300, y: -20 },
+      { src: 'images/profile-patti.jpg', alt: 'Profile Patti', height: 90, width: 290, y: 15 },
+      { src: 'images/recent-work-1.jpg', alt: 'Recent Work 1', height: 80, width: 270, y: 40 },
+      { src: 'images/recent-work-2.jpg', alt: 'Recent Work 2', height: 100, width: 310, y: -10 },
+      { src: 'images/recent-work-3.jpg', alt: 'Recent Work 3', height: 88, width: 285, y: 25 },
+      { src: 'images/recent-work-4.jpg', alt: 'Recent Work 4', height: 92, width: 295, y: -15 }
+    ];
+    
+    this.baseX = 0;
+    this.speed = 0.05;
+    this.isDragging = false;
+    this.startX = 0;
+    this.lastX = 0;
+    this.dragOffset = 0;
+    this.W_BLOCK = 0;
+    this.duplicates = 6; // Number of times to duplicate
+    
+    this.init();
+  }
   
-  slides[index].classList.add('active');
-  dots[index].classList.add('active');
-  currentSlide = index;
+  init() {
+    this.buildGallery();
+    this.calculateBlockWidth();
+    this.setupInteraction();
+    this.animate();
+  }
+  
+  buildGallery() {
+    // Create multiple copies for seamless loop
+    for (let i = 0; i < this.duplicates; i++) {
+      this.images.forEach((img, index) => {
+        const item = document.createElement('div');
+        item.className = 'hero-gallery-item';
+        item.style.height = `${img.height}%`;
+        item.style.width = `${img.width}px`;
+        item.style.marginTop = `${img.y}px`;
+        
+        const image = document.createElement('img');
+        image.src = img.src;
+        image.alt = img.alt;
+        image.loading = 'lazy';
+        
+        item.appendChild(image);
+        this.track.appendChild(item);
+      });
+    }
+  }
+  
+  calculateBlockWidth() {
+    // Calculate width of one complete set of images
+    const items = this.track.querySelectorAll('.hero-gallery-item');
+    if (items.length > 0) {
+      const gap = 16;
+      this.W_BLOCK = this.images.reduce((sum, img) => sum + img.width + gap, 0);
+    }
+  }
+  
+  setupInteraction() {
+    // Mouse events
+    this.gallery.addEventListener('mousedown', this.onPointerDown.bind(this));
+    window.addEventListener('mousemove', this.onPointerMove.bind(this));
+    window.addEventListener('mouseup', this.onPointerUp.bind(this));
+    
+    // Touch events
+    this.gallery.addEventListener('touchstart', this.onPointerDown.bind(this), { passive: false });
+    window.addEventListener('touchmove', this.onPointerMove.bind(this), { passive: false });
+    window.addEventListener('touchend', this.onPointerUp.bind(this));
+    
+    // Pause on hover
+    this.gallery.addEventListener('mouseenter', () => {
+      if (!this.isDragging) this.isPaused = true;
+    });
+    
+    this.gallery.addEventListener('mouseleave', () => {
+      this.isPaused = false;
+      this.isDragging = false;
+    });
+  }
+  
+  onPointerDown(e) {
+    this.isDragging = true;
+    this.startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    this.lastX = this.startX;
+    this.dragOffset = 0;
+    this.gallery.style.cursor = 'grabbing';
+    if (e.type.includes('touch')) e.preventDefault();
+  }
+  
+  onPointerMove(e) {
+    if (!this.isDragging) return;
+    
+    const currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    this.dragOffset = currentX - this.lastX;
+    this.lastX = currentX;
+    
+    if (e.type.includes('touch')) e.preventDefault();
+  }
+  
+  onPointerUp() {
+    this.isDragging = false;
+    this.gallery.style.cursor = 'grab';
+  }
+  
+  wrap(value, max) {
+    // Wrapping function for infinite loop
+    return ((value % max) + max) % max;
+  }
+  
+  animate() {
+    const update = () => {
+      // Continuous motion
+      if (!this.isDragging && !this.isPaused) {
+        this.baseX -= this.speed * 16; // delta time approximation
+      }
+      
+      // Add drag offset
+      if (this.isDragging) {
+        this.baseX += this.dragOffset * 0.5;
+        this.dragOffset *= 0.9; // Decay
+      }
+      
+      // Wrap position for infinite loop
+      const wrappedX = this.wrap(this.baseX, this.W_BLOCK);
+      
+      // Apply transform
+      this.track.style.transform = `translate3d(${-wrappedX}px, 0, 0)`;
+      
+      requestAnimationFrame(update);
+    };
+    
+    requestAnimationFrame(update);
+  }
 }
 
-function nextSlide() {
-  let nextIndex = (currentSlide + 1) % slides.length;
-  showSlide(nextIndex);
+// Initialize gallery when DOM is ready
+if (document.getElementById('heroGallery')) {
+  new InfiniteGallery();
 }
-
-function startCarousel() {
-  carouselInterval = setInterval(nextSlide, 4000); // Change slide every 4 seconds
-}
-
-function stopCarousel() {
-  clearInterval(carouselInterval);
-}
-
-// Dot click handlers
-dots.forEach((dot, index) => {
-  dot.addEventListener('click', function() {
-    stopCarousel();
-    showSlide(index);
-    startCarousel();
-  });
-});
-
-// Start auto-play
-startCarousel();
-
-// Pause on hover
-carousel.addEventListener('mouseenter', stopCarousel);
-carousel.addEventListener('mouseleave', startCarousel);
 </script>
 
 </body>
