@@ -144,6 +144,7 @@
     .recent-item:hover .recent-overlay { opacity: 1; }
     .recent-overlay h4 { color: #fff; font-size: 18px; font-weight: 600; margin: 0; transform: translateY(20px); transition: transform 0.3s ease; }
     .recent-item:hover .recent-overlay h4 { transform: translateY(0); }
+    .hidden-project { display: none; }
     
     /* Pricing */
     .pricing { padding: 100px 0; background: #FAF7F2; }
@@ -523,14 +524,30 @@
           <img src="images/recent-work-4.jpg" alt="Recent Work 4">
           <div class="recent-overlay"><h4>Bedroom Concealed Wiring</h4></div>
         </div>
-        <div class="recent-item" data-aos="fade-up" data-aos-delay="500">
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="500">
           <img src="images/recent-work-5.jpg" alt="Recent Work 5">
           <div class="recent-overlay"><h4>Kitchen Lighting</h4></div>
         </div>
-        <div class="recent-item" data-aos="fade-up" data-aos-delay="600">
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="600">
           <img src="images/recent-work-6.jpg" alt="Recent Work 6">
           <div class="recent-overlay"><h4>Custom Switchboard</h4></div>
         </div>
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="100">
+          <img src="images/ceiling-wiring.jpg" alt="Recent Work 7">
+          <div class="recent-overlay"><h4>Ceiling Room Wiring</h4></div>
+        </div>
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="200">
+          <img src="images/patti-fitting.jpg" alt="Recent Work 8">
+          <div class="recent-overlay"><h4>Patti Fitting Work</h4></div>
+        </div>
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="300">
+          <img src="images/profile-patti.jpg" alt="Recent Work 9">
+          <div class="recent-overlay"><h4>Profile LED Patti</h4></div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px;" data-aos="fade-up">
+        <button id="load-more-btn" class="btn btn-secondary">See More Projects <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </section>
@@ -887,6 +904,19 @@
                   navLinks.style.display = 'none';
               }
           });
+      });
+    }
+    // Load More Functionality for Recent Projects
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const hiddenProjects = document.querySelectorAll('.hidden-project');
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function() {
+        hiddenProjects.forEach(project => {
+          project.style.display = 'block';
+        });
+        AOS.refresh(); // Refresh animations for newly visible items
+        this.style.display = 'none'; // Hide button after all projects are shown
       });
     }
   </script>

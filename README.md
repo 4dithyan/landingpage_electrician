@@ -17,11 +17,6 @@ A modern, high-performance landing page for your professional electrician busine
 - **Sticky Glassmorphism Header**: Navigation that adapts gracefully as you scroll down the page.
 - **Quick Contact Options**: Floating WhatsApp button and clear call-to-action buttons.
 
-## 📝 Update Guide
-
-- **Images**: To update images in the future, simply replace the files in the `images/` directory. Be sure to use the exact same file names (like `recent-work-1.jpg`).
-- **Pricing**: You can update your prices directly by editing the text inside the "Our Charges" section in the `index.html` file.
-
 ---
 
 <div align="center">
