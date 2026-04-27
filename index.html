@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Patel Electrition | Professional Electrical Solutions</title>
   
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="images/logo.jpeg">
+  
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
@@ -36,7 +39,7 @@
     }
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    html { width: 100%; height: 100%; }
     body { font-family: var(--font-sans); background-color: var(--bg-color); color: var(--text-dark); line-height: 1.6; overflow-x: hidden; }
     a { text-decoration: none; color: inherit; }
     ul { list-style: none; }
@@ -141,6 +144,7 @@
     .recent-item:hover .recent-overlay { opacity: 1; }
     .recent-overlay h4 { color: #fff; font-size: 18px; font-weight: 600; margin: 0; transform: translateY(20px); transition: transform 0.3s ease; }
     .recent-item:hover .recent-overlay h4 { transform: translateY(0); }
+    .hidden-project { display: none; }
     
     /* Pricing */
     .pricing { padding: 100px 0; background: #FAF7F2; }
@@ -520,14 +524,30 @@
           <img src="images/recent-work-4.jpg" alt="Recent Work 4">
           <div class="recent-overlay"><h4>Bedroom Concealed Wiring</h4></div>
         </div>
-        <div class="recent-item" data-aos="fade-up" data-aos-delay="500">
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="500">
           <img src="images/recent-work-5.jpg" alt="Recent Work 5">
           <div class="recent-overlay"><h4>Kitchen Lighting</h4></div>
         </div>
-        <div class="recent-item" data-aos="fade-up" data-aos-delay="600">
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="600">
           <img src="images/recent-work-6.jpg" alt="Recent Work 6">
           <div class="recent-overlay"><h4>Custom Switchboard</h4></div>
         </div>
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="100">
+          <img src="images/ceiling-wiring.jpg" alt="Recent Work 7">
+          <div class="recent-overlay"><h4>Ceiling Room Wiring</h4></div>
+        </div>
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="200">
+          <img src="images/patti-fitting.jpg" alt="Recent Work 8">
+          <div class="recent-overlay"><h4>Patti Fitting Work</h4></div>
+        </div>
+        <div class="recent-item hidden-project" data-aos="fade-up" data-aos-delay="300">
+          <img src="images/profile-patti.jpg" alt="Recent Work 9">
+          <div class="recent-overlay"><h4>Profile LED Patti</h4></div>
+        </div>
+      </div>
+      
+      <div style="text-align: center; margin-top: 50px;" data-aos="fade-up">
+        <button id="load-more-btn" class="btn btn-secondary">See More Projects <i class="fas fa-arrow-right"></i></button>
       </div>
     </div>
   </section>
@@ -780,8 +800,25 @@
   <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
   <!-- AOS JS -->
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <!-- Lenis JS (Smooth Scrolling) -->
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
 
   <script>
+    // Initialize Lenis for Buttery Smooth Scrolling
+    const lenis = new Lenis({
+      duration: 1.5,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smooth: true,
+      mouseMultiplier: 1.1,
+      smoothTouch: false,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
     // Initialize AOS Animations
     AOS.init({
       duration: 800,
@@ -818,8 +855,10 @@
         if(targetId === '#') return;
         const targetElement = document.querySelector(targetId);
         if(targetElement) {
-            targetElement.scrollIntoView({
-                behavior: 'smooth'
+            lenis.scrollTo(targetElement, {
+                duration: 1.5,
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                offset: -80 /* Account for sticky header */
             });
         }
       });
@@ -865,6 +904,19 @@
                   navLinks.style.display = 'none';
               }
           });
+      });
+    }
+    // Load More Functionality for Recent Projects
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const hiddenProjects = document.querySelectorAll('.hidden-project');
+
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', function() {
+        hiddenProjects.forEach(project => {
+          project.style.display = 'block';
+        });
+        AOS.refresh(); // Refresh animations for newly visible items
+        this.style.display = 'none'; // Hide button after all projects are shown
       });
     }
   </script>
