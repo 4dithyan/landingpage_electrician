@@ -272,7 +272,19 @@ img {
   align-items: center;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0fdf4 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, transparent 100%);
+  z-index: 1;
+  pointer-events: none;
 }
 
 .hero-bg {
@@ -281,16 +293,7 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: url('https://images.unsplash.com/photo-1621905251918-48416bd8575a?q=80&w=2069&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.15;
-  transform: scale(1.1);
-  transition: transform 10s ease;
-}
-
-.hero:hover .hero-bg {
-  transform: scale(1);
+  background: radial-gradient(circle at 50% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 70%);
 }
 
 .hero-overlay {
@@ -299,7 +302,7 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(16, 185, 129, 0.05) 100%);
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.4) 0%, rgba(30, 41, 59, 0.4) 100%);
 }
 
 .hero-content {
@@ -316,19 +319,21 @@ img {
 
 .hero-text {
   animation: slideInLeft 0.8s ease;
+  color: white;
 }
 
 .hero-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  background: var(--bg-white);
-  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  padding: 10px 20px;
   border-radius: 50px;
-  box-shadow: var(--shadow-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 14px;
   font-weight: 600;
-  color: var(--primary);
+  color: #60a5fa;
   margin-bottom: 24px;
 }
 
@@ -339,13 +344,14 @@ img {
 .hero h1 {
   font-size: 56px;
   font-weight: 800;
-  color: var(--text-dark);
+  color: white;
   margin-bottom: 20px;
   line-height: 1.1;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
 }
 
 .hero h1 span {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  background: linear-gradient(135deg, #60a5fa 0%, #34d399 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -353,9 +359,10 @@ img {
 
 .hero p {
   font-size: 18px;
-  color: var(--text-medium);
+  color: rgba(255, 255, 255, 0.85);
   margin-bottom: 32px;
   line-height: 1.7;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
 }
 
 .hero-buttons {
@@ -424,9 +431,10 @@ img {
 .hero-infinite-gallery {
   position: relative;
   width: 100%;
-  height: 450px;
+  height: 500px;
   overflow: hidden;
   cursor: grab;
+  border-radius: var(--radius-xl);
 }
 
 .hero-infinite-gallery:active {
@@ -435,25 +443,27 @@ img {
 
 .hero-gallery-track {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   will-change: transform;
   position: absolute;
   top: 0;
   left: 0;
   height: 100%;
+  padding: 20px 0;
 }
 
 .hero-gallery-item {
   flex-shrink: 0;
-  border-radius: var(--radius-lg);
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.4s ease;
   position: relative;
 }
 
 .hero-gallery-item:hover {
-  transform: scale(1.05);
+  transform: scale(1.08);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6), 0 0 0 2px rgba(96, 165, 250, 0.5);
 }
 
 .hero-gallery-item img {
@@ -461,6 +471,11 @@ img {
   height: 100%;
   object-fit: cover;
   display: block;
+  transition: transform 0.5s ease;
+}
+
+.hero-gallery-item:hover img {
+  transform: scale(1.1);
 }
 
 .hero-gallery-overlay {
@@ -469,8 +484,9 @@ img {
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(135deg, rgba(37, 99, 235, 0.1), rgba(16, 185, 129, 0.1));
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, transparent 30%, transparent 70%, rgba(15, 23, 42, 0.3) 100%);
   pointer-events: none;
+  z-index: 1;
 }
 
 .hero-carousel {
@@ -551,7 +567,7 @@ img {
   }
   
   .hero-infinite-gallery {
-    height: 250px;
+    height: 280px;
   }
   
   .carousel-dot {
@@ -576,29 +592,32 @@ img {
 }
 
 .stat-card {
-  background: var(--bg-white);
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
   padding: 20px;
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   text-align: center;
   transition: var(--transition);
 }
 
 .stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: var(--shadow-lg);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
 .stat-number {
   font-size: 32px;
   font-weight: 800;
-  color: var(--primary);
+  color: #60a5fa;
   margin-bottom: 5px;
 }
 
 .stat-label {
   font-size: 14px;
-  color: var(--text-light);
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
 
@@ -1208,6 +1227,10 @@ section {
 
   .hero-image-wrapper img {
     height: 350px;
+  }
+  
+  .hero-infinite-gallery {
+    height: 400px;
   }
 
   .contact-wrapper {
@@ -2315,14 +2338,16 @@ class InfiniteGallery {
     
     // Gallery images configuration with visual variety
     this.images = [
-      { src: 'images/electrician-hero.jpg', alt: 'Professional Electrician', height: 100, width: 320, y: 0 },
-      { src: 'images/ceiling-wiring.jpg', alt: 'Ceiling Wiring', height: 85, width: 280, y: 30 },
-      { src: 'images/patti-fitting.jpg', alt: 'Patti Fitting', height: 95, width: 300, y: -20 },
-      { src: 'images/profile-patti.jpg', alt: 'Profile Patti', height: 90, width: 290, y: 15 },
-      { src: 'images/recent-work-1.jpg', alt: 'Recent Work 1', height: 80, width: 270, y: 40 },
-      { src: 'images/recent-work-2.jpg', alt: 'Recent Work 2', height: 100, width: 310, y: -10 },
-      { src: 'images/recent-work-3.jpg', alt: 'Recent Work 3', height: 88, width: 285, y: 25 },
-      { src: 'images/recent-work-4.jpg', alt: 'Recent Work 4', height: 92, width: 295, y: -15 }
+      { src: 'images/electrician-hero.jpg', alt: 'Professional Electrician', height: 100, width: 340, y: 0 },
+      { src: 'images/ceiling-wiring.jpg', alt: 'Ceiling Wiring', height: 82, width: 290, y: 35 },
+      { src: 'images/patti-fitting.jpg', alt: 'Patti Fitting', height: 95, width: 320, y: -25 },
+      { src: 'images/profile-patti.jpg', alt: 'Profile Patti', height: 88, width: 300, y: 20 },
+      { src: 'images/recent-work-1.jpg', alt: 'Recent Work 1', height: 78, width: 280, y: 45 },
+      { src: 'images/recent-work-2.jpg', alt: 'Recent Work 2', height: 100, width: 330, y: -15 },
+      { src: 'images/recent-work-3.jpg', alt: 'Recent Work 3', height: 85, width: 295, y: 30 },
+      { src: 'images/recent-work-4.jpg', alt: 'Recent Work 4', height: 92, width: 310, y: -20 },
+      { src: 'images/recent-work-5.jpg', alt: 'Recent Work 5', height: 80, width: 285, y: 40 },
+      { src: 'images/recent-work-6.jpg', alt: 'Recent Work 6', height: 96, width: 315, y: -10 }
     ];
     
     this.baseX = 0;
