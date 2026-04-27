@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <title>Patel Electrician | Professional Electrical Services</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -41,6 +44,7 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 80px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -49,6 +53,39 @@ body {
   color: var(--text-dark);
   line-height: 1.6;
   overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Touch-friendly elements */
+@media (hover: none) and (pointer: coarse) {
+  .btn {
+    min-height: 44px;
+  }
+  
+  .nav-link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .gallery-item {
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(37, 99, 235, 0.1);
+  }
+  
+  .service-card {
+    cursor: pointer;
+  }
+  
+  .feature-card {
+    cursor: pointer;
+  }
+  
+  .pricing-card {
+    cursor: pointer;
+  }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -1002,6 +1039,12 @@ section {
   .hero-content {
     grid-template-columns: 1fr;
     text-align: center;
+    padding: 60px 20px;
+    gap: 40px;
+  }
+
+  .hero-text {
+    order: 2;
   }
 
   .hero-buttons {
@@ -1013,11 +1056,20 @@ section {
   }
 
   .hero-image {
-    order: -1;
+    order: 1;
+  }
+
+  .hero-image-wrapper img {
+    height: 350px;
   }
 
   .contact-wrapper {
     grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .contact-map {
+    height: 300px;
   }
 
   .pricing-card.featured {
@@ -1026,6 +1078,10 @@ section {
 
   .pricing-card.featured:hover {
     transform: translateY(-10px);
+  }
+
+  .section-header h2 {
+    font-size: 36px;
   }
 }
 
@@ -1038,17 +1094,35 @@ section {
     background: var(--bg-white);
     flex-direction: column;
     padding: 30px 20px;
-    gap: 20px;
+    gap: 0;
     box-shadow: var(--shadow-lg);
     transition: var(--transition);
+    max-height: calc(100vh - 75px);
+    overflow-y: auto;
   }
 
   .nav-menu.active {
     left: 0;
   }
 
+  .nav-menu li {
+    width: 100%;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-menu li:last-child {
+    border-bottom: none;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 16px 20px;
+    font-size: 16px;
+  }
+
   .hamburger {
     display: flex;
+    padding: 10px;
   }
 
   .hamburger.active span:nth-child(1) {
@@ -1063,20 +1137,106 @@ section {
     transform: rotate(-45deg) translate(7px, -7px);
   }
 
+  .hero {
+    min-height: auto;
+    margin-top: 75px;
+  }
+
   .hero h1 {
-    font-size: 36px;
+    font-size: 32px;
   }
 
   .hero p {
     font-size: 16px;
   }
 
+  .hero-buttons {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .hero-buttons .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .stat-card {
+    padding: 15px 10px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+  }
+
   .section-header h2 {
-    font-size: 32px;
+    font-size: 28px;
+  }
+
+  .section-header p {
+    font-size: 16px;
   }
 
   section {
     padding: 60px 0;
+  }
+
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .service-image {
+    height: 200px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .gallery-item {
+    height: 200px;
+  }
+
+  .pricing-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .pricing-card {
+    padding: 30px 20px;
+  }
+
+  .pricing-price {
+    font-size: 36px;
+  }
+
+  .features-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    padding: 24px 16px;
+  }
+
+  .feature-icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .feature-icon i {
+    font-size: 24px;
   }
 
   .form-grid {
@@ -1091,9 +1251,22 @@ section {
     padding: 30px 20px;
   }
 
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 12px 14px;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
   .btn {
     padding: 14px 24px;
-    font-size: 14px;
+    font-size: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .form-submit .btn {
+    min-width: auto;
   }
 
   .whatsapp-float span {
@@ -1103,32 +1276,232 @@ section {
   .whatsapp-float {
     padding: 16px;
     border-radius: 50%;
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .footer-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .contact-item {
+    padding: 12px;
+  }
+
+  .contact-icon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .contact-icon i {
+    font-size: 18px;
+  }
+
+  .lightbox-close {
+    top: 15px;
+    right: 20px;
+    font-size: 40px;
   }
 }
 
 @media (max-width: 480px) {
+  .nav-logo {
+    font-size: 20px;
+  }
+
+  .hero {
+    margin-top: 70px;
+  }
+
   .hero h1 {
-    font-size: 28px;
+    font-size: 26px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .hero-badge {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .hero-image-wrapper img {
+    height: 250px;
   }
 
   .hero-stats {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .stat-card {
-    padding: 15px;
+    padding: 12px;
   }
 
   .stat-number {
+    font-size: 22px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+  }
+
+  .section-header h2 {
     font-size: 24px;
+  }
+
+  .section-header p {
+    font-size: 14px;
+  }
+
+  .section-badge {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
+
+  section {
+    padding: 50px 0;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
+
+  .services-grid {
+    gap: 16px;
+  }
+
+  .service-image {
+    height: 180px;
+  }
+
+  .service-content {
+    padding: 16px;
+  }
+
+  .service-content h3 {
+    font-size: 18px;
+  }
+
+  .service-content p {
+    font-size: 14px;
   }
 
   .gallery-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .gallery-item {
-    height: 250px;
+    height: 220px;
+  }
+
+  .pricing-card {
+    padding: 24px 16px;
+  }
+
+  .pricing-price {
+    font-size: 32px;
+  }
+
+  .pricing-features li {
+    padding: 10px 0;
+    font-size: 14px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .feature-card {
+    padding: 20px 16px;
+  }
+
+  .feature-card h3 {
+    font-size: 18px;
+  }
+
+  .feature-card p {
+    font-size: 14px;
+  }
+
+  .contact-info h3 {
+    font-size: 24px;
+  }
+
+  .contact-text h4 {
+    font-size: 14px;
+  }
+
+  .contact-text p,
+  .contact-text a {
+    font-size: 14px;
+  }
+
+  .booking-form-wrapper {
+    padding: 24px 16px;
+  }
+
+  .form-group label {
+    font-size: 13px;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 11px 12px;
+    font-size: 16px;
+  }
+
+  .footer {
+    padding: 40px 0 20px;
+  }
+
+  .footer-section h3 {
+    font-size: 18px;
+  }
+
+  .footer-section p,
+  .footer-section a {
+    font-size: 14px;
+  }
+
+  .footer-bottom {
+    padding-top: 20px;
+    font-size: 13px;
+  }
+
+  .lightbox-close {
+    top: 10px;
+    right: 15px;
+    font-size: 35px;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero h1 {
+    font-size: 24px;
+  }
+
+  .hero-image-wrapper img {
+    height: 200px;
+  }
+
+  .section-header h2 {
+    font-size: 22px;
+  }
+
+  .gallery-item {
+    height: 200px;
+  }
+
+  .btn {
+    padding: 12px 20px;
+    font-size: 14px;
   }
 }
 </style>
