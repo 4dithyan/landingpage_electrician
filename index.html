@@ -237,6 +237,11 @@
     .footer-contact .contact-item a:hover { color: var(--primary); }
     
     .footer-bottom { padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; color: #a0a0a0; font-size: 14px; }
+    .watermark { margin-top: 10px; font-size: 13px; opacity: 0.7; transition: opacity 0.3s ease; }
+    .watermark:hover { opacity: 1; }
+    .watermark a { color: var(--primary); font-weight: 600; position: relative; }
+    .watermark a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1px; background: var(--primary); transition: width 0.3s ease; }
+    .watermark a:hover::after { width: 100%; }
 
     /* WhatsApp Float */
     .whatsapp-float { position: fixed; bottom: 30px; right: 30px; width: 64px; height: 64px; background-color: #25d366; color: #fff; border-radius: 50px; text-align: center; font-size: 32px; box-shadow: 0 10px 20px rgba(37, 211, 102, 0.3); z-index: 100; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; }
@@ -785,7 +790,8 @@
       </div>
       
       <div class="footer-bottom">
-        &copy; 2026 Patel Electrition. All Rights Reserved.
+        <p>&copy; 2026 Patel Electrition. All Rights Reserved.</p>
+        <p class="watermark">Created by <a href="https://adithyan-portfolio.pages.dev" target="_blank">Adithyan</a></p>
       </div>
     </div>
   </footer>
